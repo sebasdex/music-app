@@ -6,8 +6,16 @@ import SearchIcon from "./Icons/SearchIcon";
 import UserIcon from "./Icons/UserIcon";
 import PauseIcon from "./Icons/PauseIcon";
 import { useEffect, useState } from "react";
-function Footer({ urlTrack, setUrlTrack, currentAudio, setCurrentAudio }) {
+import RecentPlayIcon from "./Icons/RecentPlayIcon";
+function Footer({
+  urlTrack,
+  setUrlTrack,
+  currentAudio,
+  setCurrentAudio,
+  time2,
+}) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [dataSong, setDataSong] = useState({});
 
   useEffect(() => {
     if (urlTrack) {
@@ -30,6 +38,15 @@ function Footer({ urlTrack, setUrlTrack, currentAudio, setCurrentAudio }) {
     }
   }, [urlTrack]);
 
+  useEffect(() => {
+    if (urlTrack) {
+      const currentDataSong = time2.find(
+        (item) => item.preview_url === urlTrack
+      );
+      setDataSong(currentDataSong);
+    }
+  }, [urlTrack]);
+
   const handleClick = async () => {
     if (!currentAudio) return;
     if (isPlaying) {
@@ -44,14 +61,20 @@ function Footer({ urlTrack, setUrlTrack, currentAudio, setCurrentAudio }) {
       <section className="flex flex-col items-center justify-between xl:p-4">
         <article className="flex items-center justify-between w-full min-w-96 h-full p-2 gap-1 ">
           <div className="min-w-36 md:w-1/4 flex items-center gap-2">
-            <img
-              src="../a.png"
-              alt="album-cover"
-              className="w-10 h-10 object-cover"
-            />
-            <p>
-              Music Name
-              <span className="block text-sm text-gray-400">Artist Name</span>
+            {dataSong?.album?.images?.[0]?.url ? (
+              <img
+                src={dataSong?.album?.images[0].url}
+                alt="album-cover"
+                className="w-10 h-10 object-cover"
+              />
+            ) : (
+              <RecentPlayIcon />
+            )}
+            <p className="text-nowrap overflow-hidden text-ellipsis min-w-8 max-w-52">
+              {dataSong?.name}
+              <span className="block text-sm text-gray-400">
+                {dataSong?.artists?.[0]?.name || "No artist"}
+              </span>
             </p>
           </div>
           <div className="min-w-24 w-full flex flex-col items-center justify-center gap-2">

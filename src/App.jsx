@@ -86,13 +86,25 @@ function App() {
     fetchData();
   }, []);
 
+  const time2 = trending.map((item) => {
+    return {
+      ...item,
+      duration_ms: {
+        minutes: Math.floor(item.duration_ms / 1000 / 60),
+        seconds: Math.floor((item.duration_ms / 1000) % 60)
+          .toString()
+          .padStart(2, "0"),
+      },
+    };
+  });
+
   return (
     <>
       <MenuAside />
       <main className="[grid-area:main] min-w-96 p-2 flex flex-col items-center justify-center  w-full xl:justify-start">
         <RecentPlay playList={playList} />
         <section className="min-w-96 flex gap-2 flex-col xl:flex-row w-full xl:h-full">
-          <Trending trending={trending} setUrlTrack={setUrlTrack} />
+          <Trending time2={time2} setUrlTrack={setUrlTrack} />
           <TopPlayList topForYou={topForYou} />
         </section>
       </main>
@@ -101,6 +113,7 @@ function App() {
         setUrlTrack={setUrlTrack}
         currentAudio={currentAudio}
         setCurrentAudio={setCurrentAudio}
+        time2={time2}
       />
     </>
   );

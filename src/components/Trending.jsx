@@ -1,18 +1,6 @@
 import PauseIcon from "./Icons/PauseIcon";
 import PlayListIcons from "./Icons/PlayListIcons";
-function Trending({ trending, setUrlTrack }) {
-  const time2 = trending.map((item) => {
-    return {
-      ...item,
-      duration_ms: {
-        minutes: Math.floor(item.duration_ms / 1000 / 60),
-        seconds: Math.floor((item.duration_ms / 1000) % 60)
-          .toString()
-          .padStart(2, "0"),
-      },
-    };
-  });
-
+function Trending({ time2, setUrlTrack }) {
   return (
     <article className="min-h-96 h-96 xl:w-1/2 xl:min-h-full">
       <h1 className="text-3xl font-bold p-4 bg-slate-900">Trending</h1>
