@@ -7,13 +7,7 @@ import UserIcon from "./Icons/UserIcon";
 import PauseIcon from "./Icons/PauseIcon";
 import { useEffect, useState } from "react";
 import RecentPlayIcon from "./Icons/RecentPlayIcon";
-function Footer({
-  urlTrack,
-  setUrlTrack,
-  currentAudio,
-  setCurrentAudio,
-  time2,
-}) {
+function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [dataSong, setDataSong] = useState({});
   const [trackDuration, setTrackDuration] = useState(0);
@@ -66,6 +60,13 @@ function Footer({
     }
     setIsPlaying(!isPlaying);
   };
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
   return (
     <footer className="[grid-area:footer] min-w-96 sticky bottom-0 bg-slate-700 flex flex-col">
       <section className="flex flex-col items-center justify-between xl:p-4">
@@ -91,20 +92,24 @@ function Footer({
             <button onClick={handleClick}>
               {isPlaying ? <PauseIcon /> : <PlayIcons />}
             </button>
-            <input
-              type="range"
-              name="range"
-              id="range"
-              className="w-[calc(100%-2rem)] h-1 md:block hidden"
-              min="0"
-              max={currentAudio?.duration}
-              value={trackDuration}
-              onChange={(e) => {
-                setTrackDuration(
-                  (currentAudio.currentTime = Number(e.target.value))
-                );
-              }}
-            />
+            <div className="flex items-center justify-between w-[calc(100%-2rem)] gap-1 text-xs">
+              <span>{formatTime(trackDuration)}</span>
+              <input
+                type="range"
+                name="range"
+                id="range"
+                className="w-full h-1 md:block hidden cursor-pointer"
+                min="0"
+                max={Math.round(currentAudio?.duration) || 100}
+                value={trackDuration || 0}
+                onChange={(e) => {
+                  setTrackDuration(
+                    (currentAudio.currentTime = Number(e.target.value))
+                  );
+                }}
+              />
+              <span>{formatTime(currentAudio?.duration)}</span>
+            </div>
           </div>
           <div className="w-1/5 min-w-24 md:flex items-center justify-center gap-1 hidden">
             <VolumeOn />
