@@ -18,6 +18,14 @@ function Footer({
   const [dataSong, setDataSong] = useState({});
   const [trackDuration, setTrackDuration] = useState(0);
 
+  if (dataSong) {
+    if (currentAudio) {
+      currentAudio.addEventListener("timeupdate", () => {
+        setTrackDuration(currentAudio.currentTime);
+      });
+    }
+  }
+
   useEffect(() => {
     if (urlTrack) {
       if (currentAudio) {
@@ -89,8 +97,13 @@ function Footer({
               id="range"
               className="w-[calc(100%-2rem)] h-1 md:block hidden"
               min="0"
-              max="100"
-              defaultValue={0}
+              max={currentAudio?.duration}
+              value={trackDuration}
+              onChange={(e) => {
+                setTrackDuration(
+                  (currentAudio.currentTime = Number(e.target.value))
+                );
+              }}
             />
           </div>
           <div className="w-1/5 min-w-24 md:flex items-center justify-center gap-1 hidden">
