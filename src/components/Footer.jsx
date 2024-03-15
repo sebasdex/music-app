@@ -16,6 +16,7 @@ function Footer({
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [dataSong, setDataSong] = useState({});
+  const [trackDuration, setTrackDuration] = useState(0);
 
   useEffect(() => {
     if (urlTrack) {
