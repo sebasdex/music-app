@@ -31,6 +31,7 @@ function Footer({
           setCurrentAudio(audio);
         })
         .catch((e) => console.error("Error playing the track:", e));
+      audio.volume = 0.1;
       audio.addEventListener("ended", () => setIsPlaying(false));
       return () => {
         audio.pause();
