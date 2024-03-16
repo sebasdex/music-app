@@ -11,6 +11,8 @@ function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [dataSong, setDataSong] = useState({});
   const [trackDuration, setTrackDuration] = useState(0);
+  const [volume, setVolume] = useState(0.1);
+  console.log(volume);
 
   if (dataSong) {
     if (currentAudio) {
@@ -62,6 +64,7 @@ function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
   };
 
   const formatTime = (time) => {
+    if (!time) return "00:00";
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
@@ -98,7 +101,7 @@ function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
                 type="range"
                 name="range"
                 id="range"
-                className="w-full h-1 md:block hidden cursor-pointer"
+                className="w-full h-1 md:block cursor-pointer"
                 min="0"
                 max={Math.round(currentAudio?.duration) || 100}
                 value={trackDuration || 0}
@@ -118,9 +121,13 @@ function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
               name="range"
               id="range"
               className="min-w-11 w-full h-1"
-              min="0"
-              max="100"
-              defaultValue={70}
+              min={0.1}
+              max={1}
+              step={0.1}
+              value={volume}
+              onChange={(e) => {
+                setVolume((currentAudio.volume = Number(e.target.value)));
+              }}
             />
           </div>
         </article>
