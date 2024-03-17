@@ -65,6 +65,17 @@ function MenuAside() {
           </li>
         </ul>
       </article>
+      <footer className="absolute bottom-0 left-8 text-center my-4">
+        <p className="px-4 flex flex-col items-center">
+          Esta aplicacion usa la API de Spotify
+          <a
+            className="text-blue-400"
+            href="https://developer.spotify.com/documentation/web-api/reference/"
+          >
+            Spotify Web API
+          </a>
+        </p>
+      </footer>
     </aside>
   );
 }

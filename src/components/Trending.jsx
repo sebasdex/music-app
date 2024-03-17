@@ -4,6 +4,9 @@ function Trending({ time2, setUrlTrack }) {
   return (
     <article className="min-h-96 h-96 xl:w-1/2 xl:min-h-full">
       <h1 className="text-3xl font-bold p-4 bg-slate-900">Trending</h1>
+      <p className="px-4">
+        La reproducción de las canciones sólo es un demo de 30 segundos.
+      </p>
       <div className="flex items-center m-2 flex-col gap-3 overflow-y-auto h-[calc(100%-5rem)] xl:min-h-[calc(100%-5rem)]">
         {time2.map(
           (item) =>

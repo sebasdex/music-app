@@ -1,5 +1,6 @@
 import PlayIcons from "../components/Icons/PlayIcons";
 import VolumeOn from "../components/Icons/VolumeOn";
+import VolumeOff from "../components/Icons/VolumeOff";
 import HomeIcon from "./Icons/HomeIcon";
 import LibraryIcons from "./Icons/LibraryIcons";
 import SearchIcon from "./Icons/SearchIcon";
@@ -12,6 +13,7 @@ function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
   const [dataSong, setDataSong] = useState({});
   const [trackDuration, setTrackDuration] = useState(0);
   const [volume, setVolume] = useState(0.1);
+  const [isMuted, setIsMuted] = useState(false);
 
   if (dataSong) {
     if (currentAudio) {
@@ -69,6 +71,16 @@ function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
+  const handleVolume = () => {
+    if (isMuted) {
+      currentAudio.volume = volume;
+      setIsMuted(false);
+    } else {
+      currentAudio.volume = 0;
+      setIsMuted(true);
+    }
+  };
+
   return (
     <footer className="[grid-area:footer] min-w-96 sticky bottom-0 bg-slate-700 flex flex-col">
       <section className="flex flex-col items-center justify-between xl:p-4">
@@ -114,13 +126,16 @@ function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
             </div>
           </div>
           <div className="w-1/5 min-w-24 md:flex items-center justify-center gap-1 hidden">
-            <VolumeOn />
+            <button className="w-8" onClick={handleVolume}>
+              {isMuted ? <VolumeOff /> : <VolumeOn />}
+            </button>
+
             <input
               type="range"
               name="range"
               id="range"
               className="min-w-11 w-full h-1"
-              min={0.1}
+              min={0}
               max={1}
               step={0.1}
               value={volume}
