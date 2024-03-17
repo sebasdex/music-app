@@ -12,7 +12,6 @@ function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
   const [dataSong, setDataSong] = useState({});
   const [trackDuration, setTrackDuration] = useState(0);
   const [volume, setVolume] = useState(0.1);
-  console.log(volume);
 
   if (dataSong) {
     if (currentAudio) {
