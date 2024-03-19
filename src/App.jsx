@@ -11,6 +11,7 @@ function App() {
   const [topForYou, setTopForYou] = useState([]);
   const [urlTrack, setUrlTrack] = useState([]);
   const [currentAudio, setCurrentAudio] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   useEffect(() => {
     const getToken = async () => {
       try {
@@ -98,13 +99,29 @@ function App() {
     };
   });
 
+  const handlePlayPause = async () => {
+    if (!currentAudio) return;
+    if (isPlaying) {
+      currentAudio.pause();
+    } else {
+      currentAudio.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
   return (
     <>
       <MenuAside />
       <main className="[grid-area:main] min-w-96 p-2 flex flex-col items-center justify-center  w-full xl:justify-start">
         <RecentPlay playList={playList} />
         <section className="min-w-96 flex gap-2 flex-col xl:flex-row w-full xl:h-full">
-          <Trending time2={time2} setUrlTrack={setUrlTrack} />
+          <Trending
+            time2={time2}
+            urlTrack={urlTrack}
+            setUrlTrack={setUrlTrack}
+            isPlaying={isPlaying}
+            handlePlayPause={handlePlayPause}
+          />
           <TopPlayList topForYou={topForYou} />
         </section>
       </main>
@@ -114,6 +131,9 @@ function App() {
         currentAudio={currentAudio}
         setCurrentAudio={setCurrentAudio}
         time2={time2}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        handlePlayPause={handlePlayPause}
       />
     </>
   );

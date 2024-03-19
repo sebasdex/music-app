@@ -1,6 +1,12 @@
 import PauseIcon from "./Icons/PauseIcon";
 import PlayListIcons from "./Icons/PlayListIcons";
-function Trending({ time2, setUrlTrack }) {
+function Trending({
+  time2,
+  urlTrack,
+  setUrlTrack,
+  isPlaying,
+  handlePlayPause,
+}) {
   return (
     <article className="min-h-96 h-96 xl:w-1/2 xl:min-h-full">
       <h1 className="text-3xl font-bold p-4 bg-slate-900">Trending</h1>
@@ -32,9 +38,16 @@ function Trending({ time2, setUrlTrack }) {
                   {item.duration_ms.minutes}:{item.duration_ms.seconds}
                   <span
                     className="text-white cursor-pointer hover:text-blue-400"
-                    onClick={() => setUrlTrack(item.preview_url)}
+                    onClick={() => {
+                      setUrlTrack(item.preview_url);
+                      handlePlayPause();
+                    }}
                   >
-                    <PlayListIcons />
+                    {urlTrack === item.preview_url && isPlaying ? (
+                      <PauseIcon />
+                    ) : (
+                      <PlayListIcons />
+                    )}
                   </span>
                 </p>
               </div>

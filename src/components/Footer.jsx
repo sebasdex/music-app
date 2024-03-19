@@ -8,8 +8,15 @@ import UserIcon from "./Icons/UserIcon";
 import PauseIcon from "./Icons/PauseIcon";
 import { useEffect, useState } from "react";
 import RecentPlayIcon from "./Icons/RecentPlayIcon";
-function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
-  const [isPlaying, setIsPlaying] = useState(false);
+function Footer({
+  urlTrack,
+  currentAudio,
+  setCurrentAudio,
+  time2,
+  isPlaying,
+  setIsPlaying,
+  handlePlayPause,
+}) {
   const [dataSong, setDataSong] = useState({});
   const [trackDuration, setTrackDuration] = useState(0);
   const [volume, setVolume] = useState(0.1);
@@ -54,16 +61,6 @@ function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
     }
   }, [urlTrack]);
 
-  const handleClick = async () => {
-    if (!currentAudio) return;
-    if (isPlaying) {
-      currentAudio.pause();
-    } else {
-      currentAudio.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
-
   const formatTime = (time) => {
     if (!time) return "00:00";
     const minutes = Math.floor(time / 60);
@@ -103,7 +100,7 @@ function Footer({ urlTrack, currentAudio, setCurrentAudio, time2 }) {
             </p>
           </div>
           <div className="min-w-24 w-full flex flex-col items-center justify-center gap-2">
-            <button onClick={handleClick}>
+            <button onClick={handlePlayPause}>
               {isPlaying ? <PauseIcon /> : <PlayIcons />}
             </button>
             <div className="flex items-center justify-between w-[calc(100%-2rem)] gap-1 text-xs">
