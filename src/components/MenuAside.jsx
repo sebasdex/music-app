@@ -15,15 +15,15 @@ function MenuAside() {
         <ul className="flex flex-col h-full">
           <li className="p-4 m-2 hover:text-blue-400 cursor-pointer flex gap-3">
             <HomeIcon />
-            Home
+            Inicio
           </li>
           <li className="p-4 m-2 hover:text-blue-400 cursor-pointer flex gap-3">
             <GenresIcon />
-            Genres
+            Géneros
           </li>
           <li className=" p-4 m-2 hover:text-blue-400 cursor-pointer flex gap-3">
             <ArtistIcons />
-            Artists
+            Artistas
           </li>
           <li className=" p-4 m-2 hover:text-blue-400 cursor-pointer flex gap-3">
             <AlbumIcon />
@@ -31,11 +31,11 @@ function MenuAside() {
           </li>
           <li className=" p-4 m-2 hover:text-blue-400 cursor-pointer flex gap-3 mt-14">
             <FavoriteIcon />
-            Favorites
+            Favoritos
           </li>
           <li className=" p-4 m-2 hover:text-blue-400 cursor-pointer flex gap-3 mb-14">
             <RecentPlayIcon />
-            Recently Plays
+            Recientes
           </li>
         </ul>
       </article>
@@ -53,15 +53,15 @@ function MenuAside() {
           </li>
           <li className="p-4 m-2 hover:text-blue-400 cursor-pointer flex gap-3">
             <PlayListIcons />
-            Best of 90s
+            Lo mejor de los 90s
           </li>
           <li className="p-4 m-2 hover:text-blue-400 cursor-pointer flex gap-3">
             <PlayListIcons />
-            Work Time
+            Pop
           </li>
           <li className="p-4 m-2 hover:text-blue-400 cursor-pointer flex gap-3">
             <PlayListIcons />
-            Exercise mode
+            Modo ejercicio
           </li>
         </ul>
       </article>

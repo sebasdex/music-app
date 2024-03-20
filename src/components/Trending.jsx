@@ -9,7 +9,7 @@ function Trending({
 }) {
   return (
     <article className="min-h-96 h-96 xl:w-1/2 xl:min-h-full">
-      <h1 className="text-3xl font-bold p-4 bg-slate-900">Trending</h1>
+      <h1 className="text-3xl font-bold p-4 bg-slate-900">Tendencia</h1>
       <p className="px-4">
         La reproducción de las canciones sólo es un demo de 30 segundos.
       </p>

@@ -112,7 +112,7 @@ function App() {
   return (
     <>
       <MenuAside />
-      <main className="[grid-area:main] min-w-96 p-2 flex flex-col items-center justify-center  w-full xl:justify-start">
+      <main className="[grid-area:main] min-w-96 p-2 flex flex-col items-center justify-center w-full xl:justify-start">
         <RecentPlay playList={playList} />
         <section className="min-w-96 flex gap-2 flex-col xl:flex-row w-full xl:h-full">
           <Trending
