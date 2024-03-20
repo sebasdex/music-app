@@ -15,8 +15,8 @@ function App() {
   useEffect(() => {
     const getToken = async () => {
       try {
-        const client_id = "a7ca6c3fe192433db936ede171f39e33";
-        const client_secret = "a63f52a6685b43fa902dcb276c69a615";
+        const client_id = import.meta.env.VITE_CLIENT_ID_API;
+        const client_secret = import.meta.env.VITE_CLIENT_SECRET_API;
 
         const response = await fetch("https://accounts.spotify.com/api/token", {
           method: "POST",
