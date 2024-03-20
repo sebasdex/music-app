@@ -1,6 +1,11 @@
 function RecentPlay({ playList }) {
   return (
     <>
+      <p className="text-sm bg-red-900 px-4 py-1 font-semibold">
+        Esta app sólo es un demo de reproducción de canciones, usando la API de
+        spotify, la interacción con el usuario es limitada para la reproducción
+        y navegación.
+      </p>
       <div className="flex items-center justify-between p-4 min-w-96 w-full">
         <h1 className="text-3xl font-bold">Recent Plays</h1>
         <a href="#">See all</a>

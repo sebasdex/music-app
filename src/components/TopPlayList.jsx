@@ -1,6 +1,6 @@
 function TopPlayList({ topForYou }) {
   return (
-    <article className="min-w-96 w-full xl:h-full">
+    <article className="min-w-96 w-full xl:h-full mt-6 xl:mt-0">
       <header className="p-4 flex flex-col justify-between gap-3">
         <h1 className="text-3xl font-bold">Top Playlists for you</h1>
         <a href="#">See all</a>
