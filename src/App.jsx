@@ -1,50 +1,34 @@
-import Footer from "./components/Footer";
-import MenuAside from "./components/MenuAside";
-import RecentPlay from "./components/RecentPlay";
-import TopPlayList from "./components/TopPlayList";
-import Trending from "./components/Trending";
 import { useState, useEffect } from "react";
+import Header from "./components/Header";
+import TopArtist from "./components/TopArtist";
+import FeaturedAlbum from "./components/FeaturedAlbum";
+import Tracks from "./components/Tracks";
+import Footer from "./components/Footer";
 
 function App() {
-  const [playList, setPlaylist] = useState([]);
-  const [trending, setTrending] = useState([]);
-  const [topForYou, setTopForYou] = useState([]);
-  const [urlTrack, setUrlTrack] = useState([]);
-  const [currentAudio, setCurrentAudio] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [artists, setArtists] = useState([]);
+  const [albums, setAlbums] = useState([]);
+  const [tracks, setTracks] = useState([]);
   useEffect(() => {
-    const getToken = async () => {
+    const fetchData = async () => {
       try {
-        const client_id = import.meta.env.VITE_CLIENT_ID_API;
-        const client_secret = import.meta.env.VITE_CLIENT_SECRET_API;
-
-        const response = await fetch("https://accounts.spotify.com/api/token", {
+        const clientId = import.meta.env.VITE_CLIENT_ID_API;
+        const clientSecret = import.meta.env.VITE_CLIENT_SECRET_API;
+        const tokenResponse = await fetch("https://accounts.spotify.com/api/token", {
           method: "POST",
           body: new URLSearchParams({
             grant_type: "client_credentials",
           }),
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: "Basic " + btoa(client_id + ":" + client_secret),
+            Authorization: "Basic " + btoa(clientId + ":" + clientSecret),
           },
-        });
-        return await response.json();
-      } catch (error) {
-        console.error("Error fetching token:", error);
-      }
-    };
-    const getPlaylist = async (access_token) => {
-      try {
-        const response = await fetch(
-          "https://api.spotify.com/v1/recommendations?seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA",
-          {
-            method: "GET",
-            headers: {
-              Authorization: "Bearer " + access_token,
-            },
-          }
-        );
-        const response2 = await fetch(
+        })
+        if (!tokenResponse.ok) {
+          throw new Error("Error fetching token");
+        }
+        const { access_token } = await tokenResponse.json();
+        const getAlbums = await fetch(
           "https://api.spotify.com/v1/browse/new-releases",
           {
             method: "GET",
@@ -53,9 +37,14 @@ function App() {
             },
           }
         );
-
-        const response3 = await fetch(
-          "https://api.spotify.com/v1/browse/featured-playlists",
+        if (!getAlbums.ok) {
+          throw new Error("Error fetching token");
+        }
+        const albums = await getAlbums.json();
+        setAlbums(albums.albums.items);
+        console.log(albums);
+        const getArtists = await fetch(
+          "https://api.spotify.com/v1/artists?ids=2CIMQHirSU0MQqyYHq0eOx%2C57dN52uHvrHOxijzpIgu3E%2C1vCWHaC5f2uS3yhpwWbIA6",
           {
             method: "GET",
             headers: {
@@ -63,78 +52,43 @@ function App() {
             },
           }
         );
-        return {
-          playL: await response.json(),
-          trend: await response2.json(),
-          forYou: await response3.json(),
-        };
+        if (!getArtists.ok) {
+          throw new Error("Error fetching token");
+        }
+        const artists = await getArtists.json();
+        setArtists(artists.artists);
+        console.log(artists.artists);
+        const getTracks = await fetch(
+          "https://api.spotify.com/v1/tracks?ids=7ouMYWpwJ422jRcDASZB7P%2C4VqPOruhp5EdPBeR92t6lQ%2C2takcwOaAZWiXQijPHIx7B",
+          {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer " + access_token,
+            },
+          }
+        );
+        if (!getTracks.ok) {
+          throw new Error("Error fetching token");
+        }
+        const tracks = await getTracks.json();
+        setTracks(tracks.tracks);
+        console.log(tracks);
       } catch (error) {
-        console.log(error);
+        console.log("Error fetching token:", error);
       }
-    };
-
-    const fetchData = async () => {
-      try {
-        const { access_token } = await getToken();
-        const data = await getPlaylist(access_token);
-        setTrending(data.playL.tracks);
-        setPlaylist(data.trend.albums.items);
-        setTopForYou(data.forYou.playlists.items);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    }
     fetchData();
   }, []);
 
-  const time2 = trending.map((item) => {
-    return {
-      ...item,
-      duration_ms: {
-        minutes: Math.floor(item.duration_ms / 1000 / 60),
-        seconds: Math.floor((item.duration_ms / 1000) % 60)
-          .toString()
-          .padStart(2, "0"),
-      },
-    };
-  });
-
-  const handlePlayPause = async () => {
-    if (!currentAudio) return;
-    if (isPlaying) {
-      currentAudio.pause();
-    } else {
-      currentAudio.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
-
   return (
     <>
-      <MenuAside />
-      <main className="[grid-area:main] min-w-96 p-2 flex flex-col items-center justify-center w-full xl:justify-start">
-        <RecentPlay playList={playList} />
-        <section className="min-w-96 flex gap-2 flex-col xl:flex-row w-full xl:h-full">
-          <Trending
-            time2={time2}
-            urlTrack={urlTrack}
-            setUrlTrack={setUrlTrack}
-            isPlaying={isPlaying}
-            handlePlayPause={handlePlayPause}
-          />
-          <TopPlayList topForYou={topForYou} />
-        </section>
+      <main className="space-y-8">
+        <Header />
+        <FeaturedAlbum albums={albums} />
+        <TopArtist artists={artists} />
+        <Tracks tracks={tracks} />
       </main>
-      <Footer
-        urlTrack={urlTrack}
-        setUrlTrack={setUrlTrack}
-        currentAudio={currentAudio}
-        setCurrentAudio={setCurrentAudio}
-        time2={time2}
-        isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
-        handlePlayPause={handlePlayPause}
-      />
+      <Footer />
     </>
   );
 }

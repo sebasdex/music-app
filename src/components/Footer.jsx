@@ -1,164 +1,20 @@
-import PlayIcons from "../components/Icons/PlayIcons";
-import VolumeOn from "../components/Icons/VolumeOn";
-import VolumeOff from "../components/Icons/VolumeOff";
-import HomeIcon from "./Icons/HomeIcon";
-import LibraryIcons from "./Icons/LibraryIcons";
-import SearchIcon from "./Icons/SearchIcon";
-import UserIcon from "./Icons/UserIcon";
-import PauseIcon from "./Icons/PauseIcon";
-import { useEffect, useState } from "react";
-import RecentPlayIcon from "./Icons/RecentPlayIcon";
-function Footer({
-  urlTrack,
-  currentAudio,
-  setCurrentAudio,
-  time2,
-  isPlaying,
-  setIsPlaying,
-  handlePlayPause,
-}) {
-  const [dataSong, setDataSong] = useState({});
-  const [trackDuration, setTrackDuration] = useState(0);
-  const [volume, setVolume] = useState(0.1);
-  const [isMuted, setIsMuted] = useState(false);
 
-  if (dataSong) {
-    if (currentAudio) {
-      currentAudio.addEventListener("timeupdate", () => {
-        setTrackDuration(currentAudio.currentTime);
-      });
-    }
-  }
 
-  useEffect(() => {
-    if (urlTrack) {
-      if (currentAudio) {
-        currentAudio.pause();
-      }
-      const audio = new Audio(urlTrack);
-      audio
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-          setCurrentAudio(audio);
-        })
-        .catch((e) => console.error("Error playing the track:", e));
-      audio.volume = 0.1;
-      audio.addEventListener("ended", () => setIsPlaying(false));
-      return () => {
-        audio.pause();
-        setIsPlaying(false);
-      };
-    }
-  }, [urlTrack]);
-
-  useEffect(() => {
-    if (urlTrack) {
-      const currentDataSong = time2.find(
-        (item) => item.preview_url === urlTrack
-      );
-      setDataSong(currentDataSong);
-    }
-  }, [urlTrack]);
-
-  const formatTime = (time) => {
-    if (!time) return "00:00";
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  };
-
-  const handleVolume = () => {
-    if (isMuted) {
-      currentAudio.volume = volume;
-      setIsMuted(false);
-    } else {
-      currentAudio.volume = 0;
-      setIsMuted(true);
-    }
-  };
-
-  return (
-    <footer className="[grid-area:footer] min-w-96 sticky bottom-0 bg-slate-700 flex flex-col">
-      <section className="flex flex-col items-center justify-between xl:p-4">
-        <article className="flex items-center justify-between w-full min-w-96 h-full p-2 gap-1 ">
-          <div className="min-w-36 md:w-1/4 flex items-center gap-2">
-            {dataSong?.album?.images?.[0]?.url ? (
-              <img
-                src={dataSong?.album?.images[0].url}
-                alt="album-cover"
-                className="w-10 h-10 object-cover"
-              />
-            ) : (
-              <RecentPlayIcon />
-            )}
-            <p className="text-nowrap overflow-hidden text-ellipsis min-w-8 max-w-52">
-              {dataSong?.name}
-              <span className="block text-sm text-gray-400">
-                {dataSong?.artists?.[0]?.name || "No artist"}
-              </span>
-            </p>
-          </div>
-          <div className="min-w-24 w-full flex flex-col items-center justify-center gap-2">
-            <button onClick={handlePlayPause}>
-              {isPlaying ? <PauseIcon /> : <PlayIcons />}
-            </button>
-            <div className="flex items-center justify-between w-[calc(100%-2rem)] gap-1 text-xs">
-              <span>{formatTime(trackDuration)}</span>
-              <input
-                type="range"
-                name="range"
-                id="range"
-                className="w-full h-1 md:block cursor-pointer"
-                min="0"
-                max={Math.round(currentAudio?.duration) || 100}
-                value={trackDuration || 0}
-                onChange={(e) => {
-                  setTrackDuration(
-                    (currentAudio.currentTime = Number(e.target.value))
-                  );
-                }}
-              />
-              <span>{formatTime(currentAudio?.duration)}</span>
-            </div>
-          </div>
-          <div className="w-1/5 min-w-24 md:flex items-center justify-center gap-1 hidden">
-            <button className="w-8" onClick={handleVolume}>
-              {isMuted ? <VolumeOff /> : <VolumeOn />}
-            </button>
-
-            <input
-              type="range"
-              name="range"
-              id="range"
-              className="min-w-11 w-full h-1"
-              min={0}
-              max={1}
-              step={0.1}
-              value={volume}
-              onChange={(e) => {
-                setVolume((currentAudio.volume = Number(e.target.value)));
-              }}
-            />
-          </div>
-        </article>
-        <ul className="flex gap-3 w-full p-4 justify-around items-center xl:hidden">
-          <li>
-            <HomeIcon />
-          </li>
-          <li>
-            <SearchIcon />
-          </li>
-          <li>
-            <LibraryIcons />
-          </li>
-          <li>
-            <UserIcon />
-          </li>
-        </ul>
-      </section>
-    </footer>
-  );
+function Footer() {
+    return (
+        <footer className="py-8 mt-20 border-t border-white/10">
+            <section className="flex justify-center gap-8 text-gray-400">
+                <p className="flex items-center">
+                    Made with
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-heart w-4 h-4 mx-1 text-red-500">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                    </svg>
+                    by
+                    <a href="https://github.com/sebasdex" className="ml-1">SebastianDC</a>
+                </p>
+            </section>
+        </footer>
+    )
 }
 
-export default Footer;
+export default Footer
