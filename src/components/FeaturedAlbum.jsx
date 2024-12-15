@@ -1,13 +1,19 @@
+import { useRef } from "react";
 function FeaturedAlbum({ albums }) {
+  const albumRef = useRef(null);
   const next = () => {
-    const sectionScroll = document.querySelector("#featured-album");
-    if (sectionScroll.scrollWidth > sectionScroll.clientWidth) {
-      sectionScroll.scrollLeft += sectionScroll.clientWidth;
+    const sectionScroll = albumRef.current;
+    if (sectionScroll.scrollLeft + sectionScroll.clientWidth >= sectionScroll.scrollWidth) {
+      return;
     }
+    sectionScroll.scrollLeft += sectionScroll.clientWidth;
   };
 
   const previous = () => {
-    const sectionScroll = document.querySelector("#featured-album");
+    const sectionScroll = albumRef.current;
+    if (sectionScroll.scrollLeft <= 0) {
+      return;
+    }
     sectionScroll.scrollLeft -= sectionScroll.clientWidth;
   };
 
@@ -37,7 +43,6 @@ function FeaturedAlbum({ albums }) {
           <p className="text-gray-400">New and noteworthy releases</p>
         </div>
       </div>
-      {/* Botones ahora están fuera del contenedor con scroll */}
       <button
         className="bg-purple-800/50 rounded-full p-2 text-white absolute top-[50%] 
       left-2 hover:bg-purple-800 z-10"
@@ -78,10 +83,10 @@ function FeaturedAlbum({ albums }) {
           <path d="m9 18 6-6-6-6" />
         </svg>
       </button>
-      {/* Contenedor con scroll */}
+
       <section
-        className="grid grid-flow-col gap-4 auto-cols-[minmax(380px,1fr)] overflow-hidden"
-        id="featured-album"
+        className="grid grid-flow-col gap-4 auto-cols-[minmax(380px,1fr)] overflow-x-auto md:overflow-hidden"
+        ref={albumRef}
       >
         {albums.map((artist) => (
           <article
